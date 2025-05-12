@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome to the Home Page</title>
+  <style>
+    body {
+      background-color: #f2faff; /* branco suave com toque azulado */
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #003b5c;
+    }
+
+    h1 {
+      font-size: 2em;
+      margin-bottom: 40px;
+      text-align: center;
+    }
+
+    .home-button {
+      background-color: #f5f3f5;
+      color: #010820;
+      padding: 14px 30px;
+      border: none;
+      border-radius: 12px;
+      font-size: 18px;
+      text-decoration: none;
+      text-align: center;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .home-button:hover {
+      background-color: #e0f0ff;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 1.6em;
+        margin: 20px;
+      }
+
+      .home-button {
+        font-size: 16px;
+        padding: 12px 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Welcome to the Home Page</h1>
+  <a href="/chat_api" class="home-button">AI teste</a>
+</body>
+</html>
+

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chat App</title>
+  <style>
+    :root {
+      --bg: #121212;
+      --bot: #212121;
+      --user: #212121;
+      --input-bg: #121212;
+      --text-light: #F5F3F5;
+    }
+
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text-light);
+      height: 90vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #chatBox {
+      flex: 1;
+      padding: 12px;
+      overflow-y: auto;
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .message {
+      margin: 6px 0;
+      padding: 10px 14px;
+      border-radius: 12px;
+      max-width: 80%;
+      word-wrap: break-word;
+    }
+
+    .user {
+      background-color: var(--user);
+      align-self: flex-end;
+      text-align: right;
+    }
+
+    .bot {
+      background-color: var(--bot);
+      align-self: flex-start;
+      text-align: left;
+    }
+
+    #inputContainer {
+      display: flex;
+      padding: 10px;
+      background: var(--input-bg);
+      border-top: 1px solid #444;
+    }
+
+    #userInput {
+      flex: 1;
+      padding: 10px;
+      font-size: 16px;
+      border: none;
+      border-radius: 10px;
+      background-color: #0f0f0f;
+      color: var(--text-light);
+    }
+
+    #sendBtn {
+      margin-left: 10px;
+      padding: 10px 16px;
+      background: var(--user);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    #sendBtn:hover {
+      background: #302B27;
+    }
+    
+    .resposta {
+        font-family: sans-serif;
+        background-color? #f5f3f5;
+        color: 1rem;
+        border-radius: 12px;
+        margin-bottom: 1rem;
+    }
+    
+    .assistente-bloco h3 {
+        margin-top: 0;
+        color: #f5f3f5;
+    }
+    
+    .assistente-bloco p {
+        margin: o.5rem 0 1rem 0;
+        line-height: 1.4;
+    }
+
+    hr {
+        border: none;
+        border-top: 1px solid #ccc;
+        margin: 1rem 0;
+    }
+    .loader {
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        border: 3px solid #f3f3f3;
+        border-top: 3px solid #10f0f0;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div id="chatBox"></div>
+
+  <div id="inputContainer">
+    <input type="text" id="userInput" placeholder="Digite sua mensagem..." onkeydown="if(event.key==='Enter') sendMessage()">
+    <button id="sendBtn" onclick="sendMessage()">Sent</button>
+  </div>
+
+  <script>
+async function sendMessage() {
+  const input = document.getElementById("userInput");
+  const userMsg = input.value.trim();
+  if (!userMsg) return;
+
+  appendMessage(userMsg, "user");
+
+  // Cria a div de carregamento e guarda a referência
+  const loadingDiv = appendMessage("carregando...", "bot", true);
+
+  try {
+    const response = await fetch("/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message: userMsg })
+    });
+
+    const data = await response.json();
+    const reply = data.reply || data.error || "Erro na resposta.";
+
+    // Substitui a mensagem de carregamento pela resposta
+    loadingDiv.innerHTML = reply;
+  } catch (err) {
+    loadingDiv.innerHTML = "Erro de conexão com o servidor.";
+  }
+
+  input.value = "";
+  input.focus();
+}
+
+function appendMessage(text, type, isLoading = false) {
+  const chatBox = document.getElementById("chatBox");
+  const msg = document.createElement("div");
+  msg.className = `message ${type}`;
+
+  if (isLoading) {
+    msg.innerHTML = '<span class="loader"></span> <span style="margin-left: 8px;">carregando...</span>';
+  } else {
+    msg.innerHTML = text;
+  }
+
+  chatBox.appendChild(msg);
+  chatBox.scrollTop = chatBox.scrollHeight;
+
+  return msg; // retorna a div criada
+}
+  </script>
+
+</body>
+</html>
