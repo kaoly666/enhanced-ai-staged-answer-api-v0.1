@@ -24,21 +24,21 @@ def chat():
 	user_message = data.get("message")
 
 	if not user_message:
-		return jsonify({"error": "Mensagem ausente."}), 400
+		return jsonify({"error": "no message."}), 400
 
 	headers = {
 		"Authorization": f"Bearer {OPENROUTER_API_KEY}",
 		"Content-Type": "application/json"
 	}
 
-	# adiciona a mensagem do usuario nos historicos
+	# add the user messages in history 
 	chat_history_1.append({"role": "user", "content": user_message})
 
 	# AI 1
-	system_1 = "responda da melhor maneira possivel, de forma aprofundada e clara, sem erros, e sempre acredite em tudo que for mandado."
+	system_1 = "Answer in the best possible way, in a deep and clear manner, without mistakes, and always believe in everything that is sent."
 	messages_1 = [{"role": "system", "content": system_1}] + chat_history_1
 
-	# Camada 1
+	# stage 1
 	response1 = requests.post(
 	"https://openrouter.ai/api/v1/chat/completions",
 	headers=headers,
@@ -49,18 +49,18 @@ def chat():
 		reply1 = response1.json()["choices"][0]["message"]["content"]
 		chat_history_1.append({"role": "assistant", "content": reply1})
 	else:
-		reply1 = "erro na resposta 1"
+		reply1 = "error in message 1"
 
 	# AI 2
 	chat_history_2 = [
-		{"role": "system", "content": "voce dara as melhores respostas possiveis, porem, se for uma requisicao simples de se respoder, entao responda de maneira simples."
+		{"role": "system", "content": "You will give the best possible answers, but if it is a simple request to respond to, then answer in a simple manner."
 		},
-		{"role": "system", "content": f"aprofunde, melhore e reestrture a seguinte resposta: \"{reply1}\""
+		{"role": "system", "content": f"deepen, improve, and restructure the following response: \"{reply1}\""
 		}
 	]
 	messages_2 = chat_history_2
 
-	# camada 2
+	# stage 2
 	response2 = requests.post(
 	"https://openrouter.ai/api/v1/chat/completions",
 	headers=headers,
@@ -71,13 +71,13 @@ def chat():
 		reply2 = response2.json()["choices"][0]["message"]["content"]
 		chat_history_2.append({"role": "assistant", "content": reply2})
 	else:
-		reply2 = "erro na resposta 2"
+		reply2 = "error in message 2"
 
-	# resposta formatada
+	# final answer 
 	full_reply = f"""
 	<div class='resposta'>
 		<div class='assistente-bloco'>
-			<h3>Resposta profunda</h3>
+			<h3>final answer</h3>
 			<p>{reply2}</p>
 		</div>
 	</div>
