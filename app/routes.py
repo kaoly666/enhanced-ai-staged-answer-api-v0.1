@@ -6,7 +6,7 @@ import requests
 
 OPENROUTER_API_KEY = "your API key"
 
-# historicos para cada assistentes
+# chat history 
 chat_history_1 = []
 chat_history_2 = []
 
