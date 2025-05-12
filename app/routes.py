@@ -4,7 +4,7 @@ from flask import Flask, render_template, request, jsonify
 from app import app
 import requests
 
-OPENROUTER_API_KEY = "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"
+OPENROUTER_API_KEY = "your API key"
 
 # historicos para cada assistentes
 chat_history_1 = []
