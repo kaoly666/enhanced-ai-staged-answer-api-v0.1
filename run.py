@@ -9,7 +9,7 @@ print("working...")
 time.sleep(1)
 
 if __name__ == "__main__":
-    # Inicia ngrok em background
+    # start ngrok in background 
     ngrok = subprocess.Popen(["ngrok", "http", "5000"])
     
     # Da tempo pro ngrok iniciar
